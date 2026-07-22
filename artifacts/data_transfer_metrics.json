@@ -1,0 +1,16 @@
+{
+  "metricSource": "CSP Billing & Usage Report (data-transfer-out, bucket-level, hourly granularity)",
+  "bucket": "novadynamics-billing-archive",
+  "note": "This report is generated for billing purposes, independently of CloudTrail, and was not disabled by the bucket policy change. It is the only available indirect source for estimating activity during the un-logged GetObject window.",
+  "hourly_data_transfer_out_MB": [
+    { "hour": "2026-05-18T22:00Z", "transferOutMB": 0.4 },
+    { "hour": "2026-05-18T23:00Z", "transferOutMB": 0.3 },
+    { "hour": "2026-05-19T00:00Z", "transferOutMB": 0.2 },
+    { "hour": "2026-05-19T01:00Z", "transferOutMB": 0.3 },
+    { "hour": "2026-05-19T02:00Z", "transferOutMB": 0.4 },
+    { "hour": "2026-05-19T03:00Z", "transferOutMB": 812.6 },
+    { "hour": "2026-05-19T04:00Z", "transferOutMB": 1.1 },
+    { "hour": "2026-05-19T05:00Z", "transferOutMB": 0.3 },
+    { "hour": "2026-05-19T06:00Z", "transferOutMB": 0.2 }
+  ]
+}

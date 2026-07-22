@@ -1,0 +1,70 @@
+\section{First Contact --- Direct Interaction with the Bucket}
+
+The purpose of this section is \emph{not} to find evidence but the purpose is to build a first-hand, concrete understanding of what the S3 API actually gives you when you ask it for something, so that in Sections 5--6, when you read exports that someone else produced, you know exactly what process generated them and what it could or could not have captured.
+
+\subsection{Creating the Test Bucket and Uploading Objects}
+
+Run each command separately and check its output before moving to the next one:
+
+\begin{lstlisting}
+awslocal s3 mb s3://novadynamics-billing-archive
+\end{lstlisting}
+
+\noindent
+This creates an empty bucket. ``mb'' stands for ``make bucket''; a bucket is the top-level container for objects, roughly analogous to a top-level folder, except that S3 buckets cannot be nested inside one another.
+
+\begin{lstlisting}
+echo "test content" > contract_2026_0091.pdf
+\end{lstlisting}
+(You are creating a harmless placeholder file locally, standing in for the real contract
+document. Its actual content does not matter for this exercise.)
+
+\begin{lstlisting}
+awslocal s3 cp contract_2026_0091.pdf s3://novadynamics-billing-archive/
+\end{lstlisting}
+This uploads (``puts'') the object into the bucket, under the key
+\texttt{contract\_2026\_0091.pdf}.
+
+\begin{lstlisting}
+awslocal s3 ls s3://novadynamics-billing-archive/
+\end{lstlisting}
+This lists the bucket's contents --- you should see your uploaded file, its size, and its upload
+timestamp.
+
+\subsection{Integrity Verification of the Retrieved Object}
+
+\begin{lstlisting}
+awslocal s3 cp s3://novadynamics-billing-archive/contract_2026_0091.pdf ./retrieved.pdf
+\end{lstlisting}
+\begin{lstlisting}
+sha256sum retrieved.pdf
+\end{lstlisting}
+
+\begin{questionbox}
+You have just computed a hash of an object retrieved through the cloud provider's own API ---
+you did not access any underlying disk. What exactly does this hash prove, and what does it
+\emph{not} prove, compared to a hash computed on a bit-for-bit disk image as in Laboratory 2?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{2.5cm}
+\end{answerbox}
+
+\subsection{Listing Object Metadata}
+
+\begin{lstlisting}
+awslocal s3api head-object --bucket novadynamics-billing-archive --key contract_2026_0091.pdf
+\end{lstlisting}
+This is the same category of operation --- an object metadata lookup --- that produced the
+\texttt{s3\_object\_versions.json} export you will analyse in Section 6. 
+\\
+Take a moment to compare the fields you see here with the fields inside that export file; they should look structurally similar, because they come from the same kind of underlying API call.
+
+\begin{questionbox}
+Compare the metadata fields available here to the metadata ExifTool extracted in Laboratory 2
+(Section 7.1). What forensically useful information is missing, and why?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{2.5cm}
+\end{answerbox}

@@ -1,0 +1,96 @@
+\section{Purpose and Scenario}
+
+\begin{memobox}
+\textbf{Memorandum --- Commandant Isabella Ricci, Polizia Postale}\\
+\textbf{To:} Digital Forensics Unit --- All Roles\\
+\textbf{Subject:} New Engagement --- NovaDynamics S.p.A., Operation SILENT BUCKET
+
+\vspace{0.3cm}
+Team; three months after the ransomware incident, NovaDynamics S.p.A.\ completed a
+migration of its production workloads to a cloud provider, seeking better resilience.
+Yesterday, their CISO Dr.\ Silvia Valenti reported that a batch of confidential client
+contracts has surfaced for sale on an underground forum. The affected data was stored in
+a cloud object storage bucket used by NovaDynamics' billing service (IaaS-hosted VM) and
+a separate customer-facing PaaS application.
+
+\vspace{0.2cm}
+NovaDynamics has authorized limited API-level access to their cloud environment, mediated
+through their cloud service provider, under a new Forensic Analysis Assignment dated 18
+May 2026. As in past engagements, physical access to any hardware is out of question.
+
+\vspace{0.2cm}
+I expect the team to determine what happened, when, and whether the evidence available to
+us is sufficient to support a judicial case, given the peculiar constraints of this
+environment. Coordinate explicitly, and  document exactly
+\emph{what you could and could not verify}.
+
+\vspace{0.2cm}
+\hfill Commandant Isabella Ricci --- Polizia Postale, Digital Forensics Unit
+\end{memobox}
+
+\noindent
+This laboratory scope covers: the IaaS/PaaS/SaaS distinction and its impact on evidence availability; interaction with a cloud object store via API; interpretation of provider-supplied event logs and their inherent gaps; identification of the authoritative
+(``primary'') copy among redundant/replicated objects; and the legal and trust implications of relying on cloud-provider-mediated evidence.
+
+\subsection{Investigation Objectives (from the Engagement Letter)}
+NovaDynamics S.p.A.\ formally requests that the team:
+\begin{itemize}[leftmargin=1.2cm]
+	\item Determine which cloud service model (IaaS/PaaS/SaaS) applies to each affected
+	      component, and what evidence is realistically obtainable from each.
+	\item Reconstruct a timeline of the exfiltration event using the log material the cloud
+	      provider has made available.
+	\item Identify which of the several copies/versions of the affected storage object is
+	      authoritative, and document this in the chain of custody.
+	\item Assess the legal admissibility of cloud-provider-mediated evidence, and discuss the
+	      jurisdictional complications raised by the case.
+	\item Deliver a short technical report addressing the above, including an explicit
+	      statement of the investigation's limitations.
+\end{itemize}
+
+\subsection{What We Already Have, and What We Still Need to Find Out}
+
+In a disk or memory investigation, the evidence is a single artefact (a disk image, a memory dump) that you acquire once and then examine offline, at your own pace, with full control over the copy. In a cloud investigation, there is no single artefact to acquire: what NovaDynamics' cloud provider gives you is a set of \emph{exports}, such as logs, metadata listings, billing reports, each produced by a different internal system of the provider, on a different schedule, with
+different blind spots.\\
+Your job is not just to \emph{read} these exports, but to figure out \emph{what they can and cannot tell you}, and to fill the gaps with reasoning, not with more raw
+disk bytes (because there are none you can access).
+\medskip
+
+\noindent
+That is exactly why this laboratory has two distinct kinds of activity:
+
+\begin{itemize}[leftmargin=1.2cm]
+	\item \textbf{Sections 3--4 (hands-on, ``live'')}: you will interact directly with a
+	      \emph{local, harmless stand-in} for the real bucket, using the same commands and the
+	      same protocol (S3 API) that a real investigator would use against the real cloud
+	      provider.\\
+		  The goal here is not to find evidence but to build an intuition for \emph{what kind of information the API itself can give you} (object listings, metadata, hashes), so that later, when reading the real exports, you understand exactly how that information was originally produced and what its natural limitations are.
+	\item \textbf{Sections 5--6 (analysis, ``the actual case'')}: you will examine the exports
+	      below, which represent what NovaDynamics' cloud provider actually handed over for this
+	      case. This is where the real investigation happens.
+\end{itemize}
+
+\subsection{Evidence \& Access Manifest}
+
+\begin{table}[H]
+	\centering
+	\begin{tabularx}{\textwidth}{l | l | X}
+		\toprule
+		\textbf{Artefact} & \textbf{Format} & \textbf{Description} \\
+		\midrule
+		\texttt{cloudtrail\_events.json}    & JSON                & Management/data-plane event log export, provided by the CSP \\
+		\texttt{s3\_object\_versions.json}  & JSON                & Metadata export: versions, timestamps, region tags for the affected object \\
+		\texttt{data\_transfer\_metrics.json} & JSON              & Independent billing/data-transfer-out report, hourly granularity \\
+		Live sandbox access                 & MinIO (Docker)      & A local S3-compatible emulation of the bucket, for direct hands-on interaction \\
+		\bottomrule
+	\end{tabularx}
+	\caption{Evidence and access manifest for Operation SILENT BUCKET.}
+\end{table}
+
+\begin{warningbox}
+All JSON artefacts must be treated as evidence exports. Verify the integrity of each file
+before analysis by computing its SHA-256 hash and recording it in your chain-of-custody log.\\
+No artefact may be modified in place; work only on copies.\\
+Note that a hashing/query tool such as \texttt{jq} (Section 5) does not, on its own, make an
+analysis forensically sound. Keep this
+distinction in mind: it will resurface in Section 8.
+\end{warningbox}

@@ -1,0 +1,68 @@
+\section{Tool Procurement --- A Role-Based Exercise}
+
+Before the analysis begins, each role must contribute to a documented tool selection decision.
+Three capability areas have been identified as immediate requirements for this case.
+
+\subsection{Required Capability Areas}
+
+\textbf{Area 1: Cloud API Interaction}\\
+Tools must allow listing, retrieving, and hashing objects from a cloud object store via command
+line, without requiring direct infrastructure access.
+\medskip
+
+\noindent
+\textbf{Area 2: Structured Log Analysis}\\
+Tools must parse and query JSON-formatted event logs, filtering by event type, timestamp, and
+actor.
+\medskip
+
+\noindent
+\textbf{Area 3: Local Cloud Emulation}\\
+A capability to reproduce a minimal cloud object-storage API locally, for training purposes,
+without incurring cost or requiring a real provider account.
+
+\subsection{Background: Object Storage, S3, and Why It Matters Here}
+
+Before listing the tools, it is worth clarifying two things that later sections assume you
+already understand.
+\medskip
+
+
+\noindent
+\textbf{What ``S3'' actually is.} S3 (Simple Storage Service) is the name of Amazon's object storage product, but over time its HTTP API has become a de-facto \emph{industry protocol}: 
+``S3-compatible'' storage is now offered by most cloud providers and by open-source software, regardless of who actually built it.
+\medskip
+
+\noindent
+Unlike a filesystem, an object store has no directories in the traditional sense: every object is stored flat inside a \emph{bucket}, addressed by a \emph{key} (its name/path string) and accompanied by \emph{metadata} (size, content type, last-modified time, and optionally custom key-value tags).\\
+ Whenever this laboratory says
+``interact with the bucket'', it means issuing HTTP requests against this API normally through the \texttt{aws cli}.
+\bigskip
+
+\noindent
+\textbf{Why we interact with S3 directly at all.} NovaDynamics' actual cloud provider is, of
+course, not accessible to us --- we only have the exports listed in Section 1.4. Section 4 of
+this laboratory has you interact with a \emph{local stand-in} bucket instead. This is not
+redundant busywork: it is the only way, short of a real provider account, to see first-hand what
+the S3 API actually returns for an operation like ``list objects'' or ``get object metadata''.
+That first-hand experience is what lets you later judge, in Sections 5--6, whether a given export
+is complete, plausible, or has gaps.
+
+\subsection{Background: What Docker Is, and Why We Use It Here}
+
+Docker lets you run a piece of software (here, MinIO)inside an isolated \emph{container}, without installing it directly onto your VM's operating system and without it interfering with anything else on the system. \\
+You do not need to understand Docker's internals for this laboratory; you only need three operations, all of which are shown step by step in Section 3: \emph{run} a container (start the software), \emph{list} running containers (check it is alive), and \emph{stop/remove} a container (clean up afterwards). \\
+We use Docker here purely as a convenient, disposable way to stand up a local S3-compatible server.
+
+\subsection{Pre-approved Tools}
+
+\begin{description}[leftmargin=1.5cm, style=nextline]
+	\item[\texttt{aws cli}] Standard command-line interface for interacting with S3-compatible
+	      APIs; usable against both real endpoints and local emulators.
+	\item[\texttt{jq}] Command-line JSON processor, for querying and filtering the CloudTrail-style
+	      log export.
+	\item[MinIO (Docker)] Local, open-source, cost-free emulation of an S3-compatible object
+	      store; run inside the same CAINE/Kali VM already used in previous laboratories. 
+	\item[\texttt{sha256sum}] Already used in Laboratories 2 and 3, reused here for verifying
+	      object integrity after acquisition.
+\end{description}

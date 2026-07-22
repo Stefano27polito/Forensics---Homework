@@ -1,0 +1,110 @@
+\section{Analysis of Provided Log Material}
+\label{sec:log-analysis}
+
+This is where the actual investigation begins. Everything from this point onward uses only the
+exports listed in Section 1.4 --- not the sandbox from Sections 3--4, which has already served
+its purpose.
+
+\begin{warningbox}
+A quick note on tool soundness before you start querying: \texttt{jq}, used as below, only reads
+the input file and prints to your terminal, it never modifies the file in place. \\
+This makes it compatible with forensic soundness \emph{if you follow the right procedure}: hash each JSON file
+before you touch it (as required in Section 1.4), never redirect \texttt{jq}'s output back onto the original file, and work from a copy. Note, though, that this soundness comes from \emph{how you use the tool}, not from \texttt{jq} being a certified forensic tool in the way Autopsy or Volatility are; it is a generic, general-purpose JSON processor. Keep this distinction in mind for Section 8.
+\end{warningbox}
+
+\subsection{Initial Survey}
+
+\begin{lstlisting}
+jq '.Records[] | {eventTime, eventName, sourceIPAddress, userIdentity: .userIdentity.userName}' cloudtrail_events.json
+\end{lstlisting}
+This query extracts, from every event record, only the four fields most relevant for a first
+pass: when it happened, what happened, from where, and by whom. Scan the output chronologically.
+
+\begin{questionbox}
+List, in order, every event associated with the \texttt{svc-billing-sync} role on 19 May 2026.
+What is anomalous about the \texttt{sourceIPAddress} of the first event in that sequence, and
+how would you have discovered this anomaly systematically rather than by simply reading the
+note field provided here?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\subsection{The Missing Data-Plane Events}
+
+Recall from lecture the distinction between \emph{management-plane} events (actions on the cloud resources themselves: creating a bucket, changing its policy, listing its contents) and \emph{data-plane} events (actions on the actual data inside those resources: reading or writing individual objects).\\ Whether data-plane events are logged at all is a separate, opt-in configuration choice on most cloud platforms, it does not come "for free" alongside
+management-plane logging.
+
+\begin{questionbox}
+Between the two \texttt{PutBucketPolicy} events at \texttt{03:16:22Z} and \texttt{03:45:51Z}, no \texttt{GetObject} events appear anywhere in the log. Explain precisely \emph{why} this is possible in a real cloud environment, referencing the distinction between management-plane and data-plane events. Is the absence of these events itself evidence, and if so, of what?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\subsection{Cross-Validating the Finding with a Second, Independent Method}
+
+Recall from lecture that, during acquisition, using more than one hashing algorithm at once strengthens confidence in an integrity claim: if two independent computations agree, an error or manipulation in just one of them becomes far less plausible.\\
+The same logic applies to analysis, not just acquisition --- a finding that depends entirely on a single tool's correct behaviour is weaker than one confirmed by two independent tools that parse the data in different ways.
+\medskip
+
+\noindent
+Confirm the absence of \texttt{GetObject} events from Section 5.2 using a tool that does not depend on \texttt{jq}'s JSON parser at all:
+
+\begin{lstlisting}
+grep -c '"eventName": "GetObject"' cloudtrail_events.json
+\end{lstlisting}
+This performs a dumb, literal text search for the string, entirely independently of \texttt{jq}'s
+JSON interpretation. The result should be \texttt{0}, agreeing with what you observed in Section
+5.2.
+
+\begin{questionbox}
+The \texttt{grep} command above and the \texttt{jq} query in Section 5.1 use fundamentally
+different methods to read the same file (naive text search vs. structured JSON parsing). Why
+does their agreement here strengthen your finding more than simply re-running the exact same
+\texttt{jq} query a second time would? Can you construct a (contrived) scenario in which
+\texttt{jq} and \texttt{grep} would legitimately disagree on this kind of question, even with
+perfectly valid, unaltered JSON?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\noindent
+Since the log export itself has a blind spot exactly where we need it most, we turn to a second,
+independent artefact: a billing/data-transfer report. Billing systems and audit-logging systems
+are usually built and operated independently of one another inside a cloud provider, precisely
+because they serve different purposes --- which is exactly what makes cross-referencing them
+useful here.
+
+\begin{lstlisting}
+jq '.hourly_data_transfer_out_MB[]' data_transfer_metrics.json
+\end{lstlisting}
+
+\begin{questionbox}
+Using \texttt{data\_transfer\_metrics.json}, identify the anomalous hour and estimate --- as
+precisely as the data allows --- the order of magnitude of data transferred out of the bucket
+during the un-logged window. This source was \textbf{not} disabled by the same bucket-policy
+manipulation that suppressed \texttt{GetObject} logging --- why not? What does this tell you
+about designing a logging architecture that is resilient to a single point of compromise?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\subsection{Reconstructing the Attacker's Actions}
+
+\begin{questionbox}
+Write a short timeline (bullet list, with UTC timestamps) reconstructing the attacker's actions
+from first anomalous login to policy restoration, explicitly marking which steps are supported
+by direct log evidence and which are inferred from indirect/circumstantial evidence (Section
+5.4). Why is this distinction important if this timeline is later presented in court?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3.5cm}
+\end{answerbox}

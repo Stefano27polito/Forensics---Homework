@@ -1,0 +1,136 @@
+{
+  "trailName": "novadynamics-management-events",
+  "note": "Data-plane event logging (object-level: GetObject, PutObject) was NOT enabled on this trail for the 'novadynamics-billing-archive' bucket at the time of the incident. Only management-plane events are recorded below.",
+  "exportedAt": "2026-05-19T09:00:00Z",
+  "exportedBy": "NovaDynamics CSP Support Ticket #CSP-88214",
+  "Records": [
+    {
+      "eventTime": "2026-05-16T08:02:11Z",
+      "eventName": "GetCallerIdentity",
+      "eventSource": "sts.amazonaws.com",
+      "sourceIPAddress": "10.44.2.17",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "eventTime": "2026-05-16T08:02:14Z",
+      "eventName": "ListObjectsV2",
+      "eventSource": "s3.amazonaws.com",
+      "sourceIPAddress": "10.44.2.17",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "requestParameters": {
+        "bucketName": "novadynamics-billing-archive"
+      },
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "eventTime": "2026-05-19T03:14:02Z",
+      "eventName": "GetCallerIdentity",
+      "eventSource": "sts.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "awsRegion": "eu-west-1",
+      "additionalEventData": {
+        "note": "sourceIPAddress not previously associated with this role in the preceding 90 days of trail history"
+      }
+    },
+    {
+      "eventTime": "2026-05-19T03:15:07Z",
+      "eventName": "ListObjectsV2",
+      "eventSource": "s3.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "requestParameters": {
+        "bucketName": "novadynamics-billing-archive"
+      },
+      "responseElements": null,
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "eventTime": "2026-05-19T03:16:22Z",
+      "eventName": "PutBucketPolicy",
+      "eventSource": "s3.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "requestParameters": {
+        "bucketName": "novadynamics-billing-archive",
+        "bucketPolicy": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::novadynamics-billing-archive/*"
+            }
+          ]
+        }
+      },
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "eventTime": "2026-05-19T03:45:51Z",
+      "eventName": "PutBucketPolicy",
+      "eventSource": "s3.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync"
+      },
+      "requestParameters": {
+        "bucketName": "novadynamics-billing-archive",
+        "bucketPolicy": {
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:GetObject",
+              "Resource": "arn:aws:s3:::novadynamics-billing-archive/*",
+              "Condition": {
+                "StringNotEquals": {
+                  "aws:PrincipalArn": "arn:aws:iam::551029384710:role/svc-billing-sync"
+                }
+              }
+            }
+          ]
+        },
+        "note": "Policy restored to original restrictive state"
+      },
+      "awsRegion": "eu-west-1"
+    },
+    {
+      "eventTime": "2026-05-19T07:58:40Z",
+      "eventName": "ConsoleLogin",
+      "eventSource": "signin.amazonaws.com",
+      "sourceIPAddress": "10.44.2.9",
+      "userIdentity": {
+        "type": "IAMUser",
+        "userName": "s.valenti"
+      },
+      "awsRegion": "eu-west-1",
+      "additionalEventData": {
+        "note": "CISO login, routine morning access review - unrelated to incident window"
+      }
+    }
+  ]
+}

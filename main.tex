@@ -1,0 +1,105 @@
+\documentclass[a4paper,12pt]{article} % Use the standard "article" class
+\usepackage{latex-templates/styles/polito}      % Load the custom package for Politecnico di Torino - Cybersecurity
+
+% Additional necessary packages
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}  % Extended color options
+\usepackage{graphicx}            % Include images
+\usepackage{subcaption}          % Sub-figures and captions
+\usepackage{booktabs}            % Enhanced table formatting
+\usepackage{tabularx}            % Flexible-width tables
+\usepackage{amsmath, amssymb}    % Math symbols and environments
+\usepackage{wrapfig}             % Text wrapping around figures
+\usepackage{float}               % Float control for figures/tables
+\usepackage{tcolorbox}           % Colored boxes
+\usepackage{listings}            % Code listings
+\usepackage{enumitem}            % List control
+\tcbuselibrary{skins,breakable}
+
+\graphicspath{{./images/}} % Path for images
+
+% Comando personalizzato per simulare i capitoli (kept for consistency with the notes template)
+\newcommand{\mychapter}[1]{%
+	\section*{#1}%
+	\addcontentsline{toc}{section}{#1}%
+	\vspace{1em}%
+	\hrule height 1pt%
+	\vspace{1em}%
+}
+
+% ---------------------------------------------------------------------------
+% Custom boxes used throughout the laboratory (Question / Warning / Memo /
+% Answer), styled to match the look-and-feel of the other Student Edition
+% laboratories (grey answer boxes, boxed "Question" and "Warning" callouts).
+% ---------------------------------------------------------------------------
+\newtcolorbox{questionbox}[1][]{
+	enhanced, breakable,
+	colback=LightBlue, colframe=PrussianBlue,
+	fonttitle=\bfseries, title=Question, #1
+}
+
+\newtcolorbox{warningbox}[1][]{
+	enhanced, breakable,
+	colback=yellow!10, colframe=orange!80!black,
+	fonttitle=\bfseries, title=\textbullet\ Warning, #1
+}
+
+\newtcolorbox{memobox}[1][]{
+	enhanced, breakable,
+	colback=gray!5, colframe=black,
+	fonttitle=\bfseries\scshape, title=CLASSIFIED --- Memorandum, #1
+}
+
+\newtcolorbox{answerbox}[1][]{
+	enhanced, breakable,
+	colback=gray!12, colframe=gray!40,
+	boxrule=0.4pt, sharp corners,
+	title=Your answer:, fonttitle=\bfseries\normalsize,
+	coltitle=black, colbacktitle=gray!25,
+	#1
+}
+
+% Code listing style for CLI commands / JSON snippets
+\lstdefinestyle{cliStyle}{
+	basicstyle=\ttfamily\small,
+	breaklines=true,
+	backgroundcolor=\color{gray!8},
+	frame=single,
+	rulecolor=\color{gray!40},
+	columns=fullflexible
+}
+\lstset{style=cliStyle}
+
+% ---------------------------------------------------------------------------
+% General document information
+% ---------------------------------------------------------------------------
+\title{Laboratory 5\\Cloud Forensics}
+\degree{Master's Degree in Cybersecurity}
+\author{Stefano Pietro Sternativo \\ s346910}
+\professor{Andrea Atzeni}
+\academicyear{2025/2026}
+\date{\today}
+
+\begin{document}
+
+\maketitlecustom % Custom command to create the personalized title page
+
+
+
+\newpage
+\pagestyle{myfancy}
+\tableofcontents % Generate the table of contents
+\newpage
+
+\input{sections/section01} % Purpose and Scenario
+\input{sections/section02} % Tool Procurement
+\input{sections/section03} % Environment Setup
+\input{sections/section04} % First Contact
+\input{sections/section05} % Log Analysis
+\input{sections/section06} % Redundancy and Primary Copy
+\input{sections/section07} % Cloud Service Model Comparison
+\input{sections/section08} % Legal and Trust Module
+\input{sections/section09} % Wrap-up
+
+\end{document}

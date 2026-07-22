@@ -1,0 +1,82 @@
+% Package definition for Politecnico di Torino - Cybersecurity
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{polito}[2024/09/30 Custom package for Politecnico di Torino]
+
+% Required packages
+\RequirePackage[english]{babel}  % Language support
+\RequirePackage[T1]{fontenc}     % Font encoding
+\RequirePackage{fancyhdr}        % Headers and footers
+\RequirePackage{hyperref}        % Hyperlinks
+\RequirePackage{graphicx}        % Image support
+\RequirePackage{xcolor}          % Color support
+\RequirePackage{tabularx}        % Table layout
+\RequirePackage{datetime2}       % Date time support
+
+% Colors
+\definecolor{PrussianBlue}{RGB}{0,43,73}
+\definecolor{LightBlue}{RGB}{230,255,255}
+
+% Custom commands for title, author, professor, date, academic year, and degree name
+\newcommand{\mytitle}{}
+\newcommand{\myauthor}{}
+\newcommand{\myprofessor}{}
+\newcommand{\mydate}{}
+\newcommand{\myacademicyear}{}
+\newcommand{\mydegree}{}
+
+\renewcommand{\title}[1]{\renewcommand{\mytitle}{#1}}
+\renewcommand{\author}[1]{\renewcommand{\myauthor}{#1}}
+\newcommand{\professor}[1]{\renewcommand{\myprofessor}{#1}}
+\renewcommand{\date}[1]{\renewcommand{\mydate}{#1}}
+\newcommand{\academicyear}[1]{\renewcommand{\myacademicyear}{#1}}
+\newcommand{\degree}[1]{\renewcommand{\mydegree}{#1}}  % Command to set the degree name
+
+% Improved title page command
+\newcommand{\maketitlecustom}{
+    \begin{titlepage}
+        \centering
+        % Logo at the top
+        \includegraphics[width=1\textwidth]{./images/polito_logo.png}
+        \vspace{1cm}
+
+        % Degree and title in the center
+        {\scshape\Huge \mydegree\par}
+        \vspace{1.5cm}
+
+        {\scshape\LARGE \mytitle \par}
+        \vfill
+
+        % Author, professor, and academic information at the bottom
+        \begin{tabularx}{\textwidth}{Xr}
+            \begin{minipage}[t]{0.45\textwidth}
+                \raggedright
+                {\Large Author: \\ \myauthor \par}
+            \end{minipage} &
+            \begin{minipage}[t]{0.45\textwidth}
+                \raggedleft
+                {\Large Professor: \\ \myprofessor \par}
+            \end{minipage}
+        \end{tabularx}
+
+        \vspace{0.5cm}
+        % Horizontal line and academic year, last update
+        \hrule height 0.5pt
+        \vspace{0.5cm}
+
+        {\Large Academic Year: \myacademicyear \par}
+        \vspace{0.5cm}
+
+        {\large Last update: \mydate\par}
+    \end{titlepage}
+}
+
+% Custom headers and footers
+\fancypagestyle{myfancy}{
+    \fancyhf{}
+    \fancyhead[L]{\leftmark}  % Section title on the left
+    \fancyhead[R]{\thepage}   % Page number on the right
+}
+
+% Set the depth for table of contents and section numbering
+\setcounter{tocdepth}{5}
+\setcounter{secnumdepth}{3}

@@ -1,0 +1,40 @@
+{
+  "bucket": "novadynamics-billing-archive",
+  "key": "contract_2026_0091.pdf",
+  "exportedAt": "2026-05-19T09:05:00Z",
+  "note": "Cross-region replication (CRR) is enabled on this bucket, replicating eu-west-1 to us-east-1 for disaster recovery. Replication is asynchronous and typically completes within minutes.",
+  "versions": [
+    {
+      "versionId": "v1-8f2a1c",
+      "region": "eu-west-1",
+      "lastModified": "2026-01-14T11:20:03Z",
+      "size": 482113,
+      "etag": "\"a1b2c3d4e5f60718293a4b5c6d7e8f90\"",
+      "isLatest": false,
+      "storageClass": "STANDARD",
+      "note": "Original contract upload"
+    },
+    {
+      "versionId": "v2-4d7e93",
+      "region": "eu-west-1",
+      "lastModified": "2026-05-12T09:41:27Z",
+      "size": 486502,
+      "etag": "\"b2c3d4e5f60718293a4b5c6d7e8f9012\"",
+      "isLatest": true,
+      "storageClass": "STANDARD",
+      "note": "Routine update pushed by the billing application prior to the incident. This is the authoritative, primary copy in the source region."
+    },
+    {
+      "versionId": "v2-4d7e93-repl",
+      "region": "us-east-1",
+      "lastModified": "2026-05-19T02:58:14Z",
+      "size": 486502,
+      "etag": "\"b2c3d4e5f60718293a4b5c6d7e8f9012\"",
+      "isLatest": true,
+      "storageClass": "STANDARD",
+      "replicationStatus": "REPLICA",
+      "sourceVersionId": "v2-4d7e93",
+      "note": "Cross-region replica of v2-4d7e93. Identical ETag/content to the eu-west-1 primary copy. The later lastModified timestamp here reflects replication lag, NOT a content change or a separate write event."
+    }
+  ]
+}

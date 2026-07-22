@@ -1,0 +1,51 @@
+\section{Redundancy and Primary Copy Identification}
+
+Cloud storage is, by default, redundant: providers routinely replicate objects across multiple
+physical locations (and often across regions) for durability and disaster-recovery purposes, with
+no action required from the customer. From a forensic standpoint this redundancy is a
+double-edged sword: it means the data is unlikely to be permanently lost, but it also means that
+``the same file'' may legitimately exist in more than one place at once, at slightly different
+points in a replication cycle --- and only one of those copies was actually the one interacted
+with at the time of the incident.
+
+\subsection{Inspecting the Version Export}
+
+\begin{lstlisting}
+jq '.versions[] | {versionId, region, lastModified, etag, replicationStatus}' s3_object_versions.json
+\end{lstlisting}
+
+\begin{questionbox}
+Three entries are listed for \texttt{contract\_2026\_0091.pdf}. Which one is the primary,
+authoritative copy at the time of the incident, and which is a replica? Justify your answer
+using at least two independent fields from the export --- do not rely on \texttt{lastModified}
+alone.
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\subsection{The Replication Trap}
+
+\begin{questionbox}
+A colleague on your team argues that the \texttt{us-east-1} entry must be the ``real''
+exfiltrated version, since it has the most recent timestamp. Explain why this reasoning is
+flawed, and what evidence in the export directly refutes it.
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3cm}
+\end{answerbox}
+
+\subsection{Chain of Custody Documentation}
+
+\begin{questionbox}
+Draft the chain-of-custody entry (in the same format used in Laboratory 2, Section 6.2) for
+the primary copy identified above. What field(s), specific to a cloud/versioned-object context,
+do you need to record here that had no equivalent in the Laboratory 2 disk-image chain of
+custody?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3.5cm}
+\end{answerbox}
