@@ -1,12 +1,45 @@
 \section{Redundancy and Primary Copy Identification}
 
 Cloud storage is, by default, redundant: providers routinely replicate objects across multiple
-physical locations (and often across regions) for durability and disaster-recovery purposes, with
+physical locations, and often across regions, for durability and disaster-recovery purposes, with
 no action required from the customer. From a forensic standpoint this redundancy is a
 double-edged sword: it means the data is unlikely to be permanently lost, but it also means that
 ``the same file'' may legitimately exist in more than one place at once, at slightly different
-points in a replication cycle --- and only one of those copies was actually the one interacted
+points in a replication cycle, and only one of those copies was actually the one interacted
 with at the time of the incident.
+
+\subsection{Background: Cross-Region Replication}
+
+Cross-Region Replication (CRR) copies objects from a bucket in one region, the \emph{source}, to a
+bucket in another, the \emph{destination}. Once enabled, it applies automatically to every
+subsequent write. Three of its properties matter for what follows.
+
+\textbf{It is asynchronous.} A \texttt{PutObject} on the source returns as soon as the source
+region has the object; the copy to the destination happens afterwards, typically within seconds
+but with no guaranteed bound. The two regions are therefore never continuously in step.
+
+\textbf{The replica's timestamp is the time of replication, not the time of writing.} The
+destination object records when \emph{it} was written, which is when replication delivered it.
+A replica can consequently carry a \texttt{lastModified} value later than that of the source
+object it was copied from, without anything having been modified. The lag is the cause, not a
+second write.
+
+\textbf{The content is unchanged, and says so.} Replication copies bytes verbatim, so source and
+replica share an identical \texttt{ETag}. Providers additionally mark the relationship explicitly:
+the destination object carries a replication status of \texttt{REPLICA}, and typically a reference
+back to the source version it derives from.
+
+\medskip
+
+\noindent
+The forensic consequence is a rule worth stating plainly, because it generalises well beyond this
+laboratory: \emph{in a replicated environment, recency of timestamp does not establish which copy
+was acted upon}. Two objects with the same ETag and different timestamps are one object seen at
+two points in a replication cycle. To identify the copy that was actually accessed, you look at
+what the provider states about the relationship, the replication status and the source-version
+reference, rather than at which timestamp happens to be larger. The same reasoning applies to any
+system that propagates data asynchronously, backup targets and read replicas included; CRR is
+simply the case you meet here.
 
 \subsection{Inspecting the Version Export}
 
@@ -17,12 +50,12 @@ jq '.versions[] | {versionId, region, lastModified, etag, replicationStatus}' s3
 \begin{questionbox}
 Three entries are listed for \texttt{contract\_2026\_0091.pdf}. Which one is the primary,
 authoritative copy at the time of the incident, and which is a replica? Justify your answer
-using at least two independent fields from the export --- do not rely on \texttt{lastModified}
+using at least two independent fields from the export, do not rely on \texttt{lastModified}
 alone.
 \end{questionbox}
 
 \begin{answerbox}
-\vspace{3cm}
+\vspace{2.5cm}
 \end{answerbox}
 
 \subsection{The Replication Trap}
@@ -30,7 +63,10 @@ alone.
 \begin{questionbox}
 A colleague on your team argues that the \texttt{us-east-1} entry must be the ``real''
 exfiltrated version, since it has the most recent timestamp. Explain why this reasoning is
-flawed, and what evidence in the export directly refutes it.
+flawed, and what evidence in the export directly refutes it.\\
+Then consider the converse: describe a situation in which two copies of an object in different
+regions differ in \emph{content}, and explain which fields in an export like this one would let
+you tell that case apart from ordinary replication lag.
 \end{questionbox}
 
 \begin{answerbox}
@@ -47,5 +83,5 @@ custody?
 \end{questionbox}
 
 \begin{answerbox}
-\vspace{3.5cm}
+\vspace{3cm}
 \end{answerbox}

@@ -20,7 +20,7 @@ route if you are starting from scratch for this laboratory.
 	      Appliance} $\rightarrow$ select the downloaded \texttt{.ova} file $\rightarrow$
 	      \emph{Next}.
 	\item \textbf{Adjust resources before finishing the import.} On the settings review screen,
-	      increase \textbf{RAM to at least 4096 MB} (the default is often lower) --- see the
+	      increase \textbf{RAM to at least 4096 MB} (the default is often lower), see the
 	      warning below for why this matters more here than in previous laboratories.
 	\item \textbf{Enable nested virtualisation.} After import, before first boot: select the VM
 	      $\rightarrow$ \emph{Settings} $\rightarrow$ \emph{System} $\rightarrow$
@@ -43,14 +43,14 @@ host CPU or hypervisor may not support nested virtualisation. In that case, Dock
 is not guaranteed to work reliably, and you should flag this to your team.
 \end{warningbox}
 
-\subsection{Base Forensic VM --- Distribution Choice and Write-Blocking (recap from Laboratory 2)}
+\subsection{Base Forensic VM (recap from Laboratory 2)}
 
 If you are instead reusing an existing installation rather than the quick \texttt{.ova} route above, the following recap still applies:
 
 \begin{description}[leftmargin=1.5cm, style=nextline]
 	\item[Choice of distribution] CAINE 14 ``Lightstream'' \emph{or} Kali Linux (Forensic
 	      Mode). Either is acceptable; both are pre-approved.
-	\item[VM configuration] RAM: 4GB minimum (3GB absolute minimum --- see the warning below
+	\item[VM configuration] RAM: 4GB minimum (3GB absolute minimum, see the warning below
 	      regarding Docker's additional memory footprint).\\
 		  Network: host-only or NAT adapter,
 	      as long as outbound connectivity works (Docker needs to pull images from the internet
@@ -63,7 +63,7 @@ If you are instead reusing an existing installation rather than the quick \textt
 
 \begin{warningbox}
 This laboratory does not involve seized physical media, so write-blocking procedures are not
-exercised directly here --- but the same VM, once configured, is reused for the Docker/MinIO
+exercised directly here, but the same VM, once configured, is reused for the Docker/MinIO
 setup below. 4GB of RAM should be treated as a firm minimum, not merely a suggestion: Section 3.3
 adds a containerised service on top of the base VM's own overhead, and low-RAM VMs have been
 observed to make the container unstable or very slow to respond.
@@ -89,7 +89,7 @@ sudo usermod -aG docker $USER
 
 \begin{warningbox}
 \textbf{Stop here and restart your session.} The \texttt{usermod} command above only takes
-effect the \emph{next} time you log in --- it does not apply retroactively to your current
+effect the \emph{next} time you log in, it does not apply retroactively to your current
 shell. Log out and log back in (or reboot the VM) before continuing, otherwise every subsequent
 \texttt{docker} command in this section will fail with a permission error unless prefixed with
 \texttt{sudo}.
@@ -102,21 +102,36 @@ docker run hello-world
 \end{lstlisting}
 This should print a short ``Hello from Docker!'' confirmation message. If it hangs, times out, or
 errors out, revisit the nested-virtualisation setting from Section 3.1 before proceeding further. This is the most common cause of failure at this exact step.
+\medskip
 
-\subsection{Setting Up a Local S3-Compatible Emulator (MinIO)}
+\noindent
+Record the Docker version you are running, for the reproducibility reasons set out in Section 2.4:
+\begin{lstlisting}
+docker --version
+\end{lstlisting}
+
+\subsection{Setting Up MinIO}
 
 With Docker confirmed working, start MinIO, that is a local, open-source server that speaks the same S3 API as a real cloud provider, so that the \texttt{aws cli} commands you will run in Section 4 work identically to how they would against a real bucket.
+\medskip
+
+\noindent
+The image tag below is pinned to the release under which this laboratory was verified, rather than
+\texttt{latest}, so that everyone obtains the same behaviour (Section 2.4). The
+\texttt{-\/-add-host} flag is needed later, in Section 4.5, so that the container can reach a
+listener running on the VM itself:
 
 \begin{lstlisting}
 docker run -d --name minio \
   -p 9000:9000 -p 9001:9001 \
+  --add-host=host.docker.internal:host-gateway \
   -e "MINIO_ROOT_USER=minioadmin" \
   -e "MINIO_ROOT_PASSWORD=minioadmin" \
-  minio/minio server /data --console-address ":9001"
+  minio/minio:RELEASE.2025-09-07T16-13-09Z server /data --console-address ":9001"
 \end{lstlisting}
 
 \noindent
-Verify the container started correctly and \emph{stayed running} (this matters: some containers start and then immediately exit due to a configuration error --- a running container is not the same as a successfully created one):
+Verify the container started correctly and \emph{stayed running} (this matters: some containers start and then immediately exit due to a configuration error, a running container is not the same as a successfully created one):
 
 \begin{lstlisting}
 docker ps
@@ -147,8 +162,11 @@ sudo apt install awscli
 \end{lstlisting}
 
 \noindent
-Then configure it with the MinIO root credentials. Run each line separately, exactly as in
-Section 3.3 --- do \emph{not} paste them as one block:
+Record its version too, then configure it with the MinIO root credentials. Run each line separately, exactly as in
+Section 3.3, do \emph{not} paste them as one block:
+\begin{lstlisting}
+aws --version
+\end{lstlisting}
 \begin{lstlisting}
 aws configure set aws_access_key_id minioadmin
 \end{lstlisting}
@@ -160,7 +178,7 @@ aws configure set region eu-west-1
 \end{lstlisting}
 
 \noindent
-Verify the credentials were actually stored before moving on --- do not assume the three commands
+Verify the credentials were actually stored before moving on, do not assume the three commands
 above succeeded silently: 
 
 \begin{lstlisting}
@@ -179,6 +197,27 @@ alias awslocal="aws --endpoint-url=http://localhost:9000"
 This \texttt{alias} only lasts for the current shell session. If you close the terminal or open a
 new one, you will need to redefine it (or add it to \texttt{\textasciitilde/.bashrc} /
 \texttt{\textasciitilde/.zshrc} if you want it to persist).
+\end{warningbox}
+
+\begin{warningbox}
+\textbf{An unorthodox practice, flagged as such.} The two commands above put the MinIO root
+credentials on the command line in cleartext. This is acceptable \emph{here} only because they are
+throwaway credentials for a local, disposable sandbox holding no real evidence. In any real
+environment it would be poor practice, and for reasons that matter forensically as much as
+operationally: the credentials remain visible in your shell history
+(\texttt{\textasciitilde/.zsh\_history}), in the process list while the command runs
+(\texttt{ps aux}), and, for the values passed to \texttt{docker run}, in the container metadata
+retrievable by any local user with \texttt{docker inspect minio}. An investigator who works this
+way on a live system both exposes the credentials and writes avoidable artefacts onto the machine
+under examination.\\
+Two straightforward alternatives: write the credentials directly into
+\texttt{\textasciitilde/.aws/credentials} with restrictive permissions
+(\texttt{chmod 600}), so they never transit the command line; or, for the container, place them in
+an \texttt{.env} file (also \texttt{chmod 600}) and pass it with
+\texttt{docker run -\/-env-file}, which keeps them out of \texttt{docker inspect} output.\\
+Keep this in mind for Section 8: the same question, who can see and who can alter the material
+your conclusions rest on, applies both to the credentials you use and to the evidence you are
+given.
 \end{warningbox}
 
 \begin{questionbox}

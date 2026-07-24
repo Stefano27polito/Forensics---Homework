@@ -32,6 +32,50 @@
       "awsRegion": "eu-west-1"
     },
     {
+      "eventTime": "2026-05-19T02:54:33Z",
+      "eventName": "AssumeRole",
+      "eventSource": "sts.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "IAMUser",
+        "arn": "arn:aws:iam::551029384710:user/compromised.user",
+        "userName": "compromised.user",
+        "sourceIdentity": "compromised.user"
+      },
+      "requestParameters": {
+        "roleArn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "roleSessionName": "forensic-session-001"
+      },
+      "responseElements": {
+        "credentials": {
+          "sessionToken": "FwoGZXIvYXdzEND... (truncated)"
+        }
+      },
+      "awsRegion": "eu-west-1",
+      "additionalEventData": {
+        "note": "This AssumeRole call is the actual point where the attacker obtained the credentials they would use in the subsequent events. The sourceIdentity field shows that 'compromised.user' invoked the role assumption, not the svc-billing-sync role itself."
+      }
+    },
+    {
+      "eventTime": "2026-05-19T02:54:35Z",
+      "eventName": "GetSessionToken",
+      "eventSource": "sts.amazonaws.com",
+      "sourceIPAddress": "185.220.101.47",
+      "userIdentity": {
+        "type": "AssumedRole",
+        "arn": "arn:aws:iam::551029384710:role/svc-billing-sync",
+        "userName": "svc-billing-sync",
+        "sourceIdentity": "compromised.user"
+      },
+      "requestParameters": {
+        "durationSeconds": 3600
+      },
+      "awsRegion": "eu-west-1",
+      "additionalEventData": {
+        "note": "The sourceIdentity field here still shows 'compromised.user', indicating that the original compromised identity is still trackable even after role assumption. This is a key forensic signal."
+      }
+    },
+    {
       "eventTime": "2026-05-19T03:14:02Z",
       "eventName": "GetCallerIdentity",
       "eventSource": "sts.amazonaws.com",

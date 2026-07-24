@@ -1,9 +1,9 @@
-PWD /home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/lab5_latex
+PWD /home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/Homework- Sternativo
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/lab5_latex/main.tex
+INPUT /home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/Homework- Sternativo/main.tex
 OUTPUT main.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/article.cls

@@ -2,7 +2,7 @@
 \label{sec:log-analysis}
 
 This is where the actual investigation begins. Everything from this point onward uses only the
-exports listed in Section 1.4 --- not the sandbox from Sections 3--4, which has already served
+exports listed in Section 1.4, not the sandbox from Sections 3--4, which has already served
 its purpose.
 
 \begin{warningbox}
@@ -47,7 +47,7 @@ Between the two \texttt{PutBucketPolicy} events at \texttt{03:16:22Z} and \textt
 \subsection{Cross-Validating the Finding with a Second, Independent Method}
 
 Recall from lecture that, during acquisition, using more than one hashing algorithm at once strengthens confidence in an integrity claim: if two independent computations agree, an error or manipulation in just one of them becomes far less plausible.\\
-The same logic applies to analysis, not just acquisition --- a finding that depends entirely on a single tool's correct behaviour is weaker than one confirmed by two independent tools that parse the data in different ways.
+The same logic applies to analysis, not just acquisition: a finding that depends entirely on a single tool's correct behaviour is weaker than one confirmed by two independent tools that parse the data in different ways.
 \medskip
 
 \noindent
@@ -77,7 +77,7 @@ perfectly valid, unaltered JSON?
 Since the log export itself has a blind spot exactly where we need it most, we turn to a second,
 independent artefact: a billing/data-transfer report. Billing systems and audit-logging systems
 are usually built and operated independently of one another inside a cloud provider, precisely
-because they serve different purposes --- which is exactly what makes cross-referencing them
+because they serve different purposes, which is exactly what makes cross-referencing them
 useful here.
 
 \begin{lstlisting}
@@ -85,10 +85,10 @@ jq '.hourly_data_transfer_out_MB[]' data_transfer_metrics.json
 \end{lstlisting}
 
 \begin{questionbox}
-Using \texttt{data\_transfer\_metrics.json}, identify the anomalous hour and estimate --- as
-precisely as the data allows --- the order of magnitude of data transferred out of the bucket
+Using \texttt{data\_transfer\_metrics.json}, identify the anomalous hour and estimate, as
+precisely as the data allows, the order of magnitude of data transferred out of the bucket
 during the un-logged window. This source was \textbf{not} disabled by the same bucket-policy
-manipulation that suppressed \texttt{GetObject} logging --- why not? What does this tell you
+manipulation that suppressed \texttt{GetObject} logging. Why not? What does this tell you
 about designing a logging architecture that is resilient to a single point of compromise?
 \end{questionbox}
 
@@ -97,6 +97,24 @@ about designing a logging architecture that is resilient to a single point of co
 \end{answerbox}
 
 \subsection{Reconstructing the Attacker's Actions}
+
+Before writing the timeline, look again at the two earliest events of 19 May, \texttt{AssumeRole} and \texttt{GetSessionToken}. Every event after them is attributed to the role \texttt{svc-billing-sync}, which is a legitimate service identity and would raise no suspicion on its own. These two events are where that role was taken up, and they carry a field the later ones do not foreground: \texttt{sourceIdentity}, recording which principal invoked the assumption.
+
+\begin{lstlisting}
+jq '.Records[] | select(.eventName=="AssumeRole" or .eventName=="GetSessionToken") | {eventTime, eventName, sourceIPAddress, arn: .userIdentity.arn, sourceIdentity: .userIdentity.sourceIdentity}' cloudtrail_events.json
+\end{lstlisting}
+
+\begin{questionbox}
+Distinguish the two identities present in these records: the role under which the subsequent actions were performed, and the principal that assumed it.
+\\
+(a) Had \texttt{sourceIdentity} been absent from the export, what could you still have concluded about \emph{who} acted, and what would have become unprovable?
+\\
+(b) An assumed role is a legitimate mechanism, used here by the billing service every day. What, in this specific sequence, separates the 19 May assumption from ordinary use, and would that distinction survive if the attacker had operated from an IP address already associated with the service?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{3.5cm}
+\end{answerbox}
 
 \begin{questionbox}
 Write a short timeline (bullet list, with UTC timestamps) reconstructing the attacker's actions

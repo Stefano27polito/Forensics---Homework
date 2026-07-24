@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.23)  22 JUL 2026 14:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.10.23)  24 JUL 2026 17:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/lab5_latex/main.tex"
-(/home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/lab5_latex/main.tex
+**"/home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/Homework- Sternativo/main.tex"
+(/home/stefano/Scrivania/POLITO/SECONDO ANNO/II_SEMESTRE/Forensics/homeworks/Homework- Sternativo/main.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -716,7 +716,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count340
-<./images/polito_logo.png, id=131, 702.9462pt x 308.8338pt>
+<./images/polito_logo.png, id=147, 702.9462pt x 308.8338pt>
 File: ./images/polito_logo.png Graphic file (type png)
 <use ./images/polito_logo.png>
 Package pdftex.def Info: ./images/polito_logo.png  used on input line 86.
@@ -724,18 +724,13 @@ Package pdftex.def Info: ./images/polito_logo.png  used on input line 86.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd) (/usr/share/texmf/tex/latex/lm/omllmm.fd) (/usr/share/texmf/tex/latex/lm/omslmsy.fd) (/usr/share/texmf/tex/latex/lm/omxlmex.fd) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd) (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc} <./images/polito_logo.png>] (./main.toc
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 12.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 13.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (3.70886pt too wide) in paragraph at lines 24--24
+Overfull \hbox (3.70886pt too wide) in paragraph at lines 27--27
  [][] [][]\T1/lmr/m/n/12 Cross-Validating the Find-ing with a Sec-ond, In-de-pen-dent Method[] [][]  
  []
-
-)
-\tf@toc=\write5
-\openout5 = `main.toc'.
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -748,8 +743,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.93 \newpage
-              [1] (./sections/section01.tex
+l.36 ...on}{\numberline {9}Wrap-Up}{30}{section.9}
+                                                  % [1])
+\tf@toc=\write5
+\openout5 = `main.toc'.
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[2] (./sections/section01.tex
 
 LaTeX Font Warning: Font shape `T1/lmr/bx/sc' undefined
 (Font)              using `T1/lmr/bx/n' instead on input line 4.
@@ -770,64 +777,56 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[2{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+[3{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 []|\T1/lmr/m/n/12 Management/data-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 \T1/lmr/m/n/12 plane event log
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 []|\T1/lmr/m/n/12 Metadata ex-port:
  []
 
 
-Underfull \hbox (badness 1845) in paragraph at lines 85--85
+Underfull \hbox (badness 1845) in paragraph at lines 86--86
 \T1/lmr/m/n/12 re-gion tags for the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 []|\T1/lmr/m/n/12 Independent
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 \T1/lmr/m/n/12 billing/data-transfer-
  []
 
 
-Underfull \hbox (badness 5970) in paragraph at lines 85--85
+Underfull \hbox (badness 5970) in paragraph at lines 86--86
 \T1/lmr/m/n/12 out re-port, hourly
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 []|\T1/lmr/m/n/12 A lo-cal S3-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 85--85
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
 \T1/lmr/m/n/12 compatible em-u-
  []
 
 
-Underfull \hbox (badness 3068) in paragraph at lines 85--85
+Underfull \hbox (badness 3068) in paragraph at lines 86--86
 \T1/lmr/m/n/12 for di-rect hands-on
  []
 
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[3]) (./sections/section02.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -843,18 +842,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[5]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 60.
-
-Overfull \hbox (22.69975pt too wide) in paragraph at lines 62--64
-   [] \T1/lmr/m/n/12 Command-line JSON pro-ces-sor, for query-ing and fil-ter-ing the CloudTrail-
- []
-
-) (./sections/section03.tex
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 6.
-
+[5]) (./sections/section02.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -863,6 +851,33 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [6]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[7]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 92.
+
+Overfull \hbox (22.69975pt too wide) in paragraph at lines 94--96
+   [] \T1/lmr/m/n/12 Command-line JSON pro-ces-sor, for query-ing and fil-ter-ing the CloudTrail-
+ []
+
+) (./sections/section03.tex
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[8]
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 6.
+
 Overfull \hbox (7.28036pt too wide) in paragraph at lines 13--19
 []$\T1/lmtt/m/n/12 https : / / www . kali . org / get-[]kali / #kali-[]virtual-[]machines$[] \T1/lmr/m/n/12 (choose
  []
@@ -874,31 +889,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[7{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}]
-Overfull \hbox (13.08482pt too wide) in paragraph at lines 46--46
-[]\T1/lmr/bx/n/14.4 Base Foren-sic VM --- Dis-tri-bu-tion Choice and Write-
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[8]
-Overfull \hbox (16.38417pt too wide) in paragraph at lines 106--106
-[]\T1/lmr/bx/n/14.4 Setting Up a Lo-cal S3-Compatible Em-u-la-tor (MinIO) 
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[9]
+[9{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -907,31 +898,22 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [10]
-Underfull \hbox (badness 4291) in paragraph at lines 185--187
-[]\T1/lmr/m/n/12 Why must ev-ery com-mand in this sec-tion ex-plic-itly spec-ify
- []
-
-) (./sections/section04.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 27.11652pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.11652pt}.
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-15.11652pt}.
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [11]
-Overfull \hbox (66.5693pt too wide) in paragraph at lines 25--27
-\T1/lmr/m/n/12 This up-loads (``puts'') the ob-ject into the bucket, un-der the key \T1/lmtt/m/n/12 contract_2026_0091.pdf\T1/lmr/m/n/12 . 
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 27.11652pt, for example:
-(fancyhdr)                \setlength{\headheight}{27.11652pt}.
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
 (fancyhdr)                You might also make \topmargin smaller to compensate:
-(fancyhdr)                \addtolength{\topmargin}{-15.11652pt}.
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[12]) (./sections/section05.tex
+[12]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -940,6 +922,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [13]
+Underfull \hbox (badness 4291) in paragraph at lines 224--226
+[]\T1/lmr/m/n/12 Why must ev-ery com-mand in this sec-tion ex-plic-itly spec-ify
+ []
+
+) (./sections/section04.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -948,8 +935,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [14]
-Underfull \hbox (badness 3407) in paragraph at lines 40--41
-[]\T1/lmr/m/n/12 Between the two \T1/lmtt/m/n/12 PutBucketPolicy \T1/lmr/m/n/12 events at \T1/lmtt/m/n/12 03:16:22Z \T1/lmr/m/n/12 and
+Overfull \hbox (66.5693pt too wide) in paragraph at lines 28--30
+\T1/lmr/m/n/12 This up-loads (``puts'') the ob-ject into the bucket, un-der the key \T1/lmtt/m/n/12 contract_2026_0091.pdf\T1/lmr/m/n/12 . 
  []
 
 
@@ -967,7 +954,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[16]) (./sections/section06.tex
+[16]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -983,7 +970,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[18]) (./sections/section07.tex
+[18]) (./sections/section05.tex
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -991,7 +978,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[19]) (./sections/section08.tex
+[19]
+Underfull \hbox (badness 3407) in paragraph at lines 40--41
+[]\T1/lmr/m/n/12 Between the two \T1/lmtt/m/n/12 PutBucketPolicy \T1/lmr/m/n/12 events at \T1/lmtt/m/n/12 03:16:22Z \T1/lmr/m/n/12 and
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1007,7 +998,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[21]) (./sections/section09.tex)
+[21]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -1015,7 +1006,75 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[22] (./main.aux)
+[22]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[23]) (./sections/section06.tex
+Overfull \hbox (8.62674pt too wide) in paragraph at lines 21--26
+\T1/lmr/m/n/12 when repli-ca-tion de-liv-ered it. A replica can con-se-quently carry a \T1/lmtt/m/n/12 lastModified
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[24]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[25]) (./sections/section07.tex
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[26]) (./sections/section08.tex
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[27]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[28]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[29]) (./sections/section09.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[30] (./main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -1025,21 +1084,21 @@ L3 programming layer <2024-01-22>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7D919FD35C59830EE63B8507AD6AC7AE;7861.
+(rerunfilecheck)             Checksum: 7B74852C0BA44453C7811B2DEAC15601;7792.
  ) 
 Here is how much of TeX's memory you used:
- 31950 strings out of 474222
- 625979 string characters out of 5748732
- 2005975 words of memory out of 5000000
- 53564 multiletter control sequences out of 15000+600000
+ 32020 strings out of 474222
+ 626982 string characters out of 5748732
+ 2048975 words of memory out of 5000000
+ 53577 multiletter control sequences out of 15000+600000
  604069 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,131p,697b,1088s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,131p,839b,1088s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb>
-Output written on main.pdf (23 pages, 446031 bytes).
+Output written on main.pdf (31 pages, 471543 bytes).
 PDF statistics:
- 418 PDF objects out of 1000 (max. 8388607)
- 367 compressed objects within 4 object streams
- 121 named destinations out of 1000 (max. 500000)
- 266 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 527 PDF objects out of 1000 (max. 8388607)
+ 467 compressed objects within 5 object streams
+ 178 named destinations out of 1000 (max. 500000)
+ 298 words of extra memory for PDF output out of 10000 (max. 10000000)
 

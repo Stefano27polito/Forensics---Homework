@@ -1,0 +1,22 @@
+{
+  "digestFormat": "simplified-for-lab",
+  "note": "In real AWS CloudTrail, digest files contain: (1) SHA-256 hashes of all log files produced in a time window, (2) the SHA-256 hash of the PREVIOUS digest file (to create a chain), and (3) a digital signature generated using AWS's private key. This laboratory version is simplified: it contains hashes of the log files but not the signature, since we do not have AWS's private key. See Section 8(b) for the forensic implications.",
+  "digestStartTime": "2026-05-19T00:00:00Z",
+  "digestEndTime": "2026-05-19T23:59:59Z",
+  "digestTimestamp": "2026-05-20T09:00:00Z",
+  "digestedLogFiles": [
+    {
+      "logFileName": "cloudtrail_events.json",
+      "sha256Hash": "05eebadd5e2688ca2a9589dc999a91d05f07227adc620dc75b37f74d1b337238",
+      "hashAlgorithm": "SHA-256",
+      "size": 6210,
+      "s3URI": "s3://novadynamics-cloudtrail-logs/AWSLogs/551029384710/CloudTrail/eu-west-1/2026/05/19/novadynamics-cloudtrail-logs-AWSLogs-551029384710-CloudTrail-eu-west-1-2026-05-19-09-00-00-abcd1234.json.gz"
+    }
+  ],
+  "previousDigestHash": "a1b2c3d4e5f6071829a3b4c5d6e7f8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c",
+  "previousDigestHashAlgorithm": "SHA-256",
+  "note_on_signature": "In real AWS CloudTrail, this digest file would be signed using AWS's private key (RSA 2048 bit). The signature would be included as a base64-encoded field. An investigator could verify the signature using AWS's public key (available from https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-examples.html#cloudtrail-log-file-digest-file-example), proving that the digest file was genuinely produced by AWS and has not been tampered with. This laboratory version does not include the signature; see Section 8(b) for why this is a forensic problem.",
+  "cloudtrailVersion": "1.05",
+  "accountId": "551029384710",
+  "region": "eu-west-1"
+}

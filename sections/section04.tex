@@ -1,23 +1,26 @@
-\section{First Contact --- Direct Interaction with the Bucket}
+\section{First Contact with the Bucket}
 
-The purpose of this section is \emph{not} to find evidence but the purpose is to build a first-hand, concrete understanding of what the S3 API actually gives you when you ask it for something, so that in Sections 5--6, when you read exports that someone else produced, you know exactly what process generated them and what it could or could not have captured.
+The purpose of this section is \emph{not} to find evidence, the sandbox bucket you are about
+to create contains nothing incriminating. The purpose is to build a first-hand, concrete
+understanding of what the S3 API actually gives you when you ask it for something, so that in
+Sections 5--6, when you read exports that someone else produced, you know exactly what process
+generated them and what it could or could not have captured.
 
 \subsection{Creating the Test Bucket and Uploading Objects}
 
 Run each command separately and check its output before moving to the next one:
-
 \begin{lstlisting}
 awslocal s3 mb s3://novadynamics-billing-archive
 \end{lstlisting}
-
-\noindent
-This creates an empty bucket. ``mb'' stands for ``make bucket''; a bucket is the top-level container for objects, roughly analogous to a top-level folder, except that S3 buckets cannot be nested inside one another.
+This creates an empty bucket. ``mb'' stands for ``make bucket''; a bucket is the top-level
+container for objects, roughly analogous to a top-level folder, except that S3 buckets cannot be
+nested inside one another.
 
 \begin{lstlisting}
 echo "test content" > contract_2026_0091.pdf
 \end{lstlisting}
 (You are creating a harmless placeholder file locally, standing in for the real contract
-document. Its actual content does not matter for this exercise.)
+document, its actual content does not matter for this exercise.)
 
 \begin{lstlisting}
 awslocal s3 cp contract_2026_0091.pdf s3://novadynamics-billing-archive/
@@ -28,7 +31,7 @@ This uploads (``puts'') the object into the bucket, under the key
 \begin{lstlisting}
 awslocal s3 ls s3://novadynamics-billing-archive/
 \end{lstlisting}
-This lists the bucket's contents --- you should see your uploaded file, its size, and its upload
+This lists the bucket's contents, you should see your uploaded file, its size, and its upload
 timestamp.
 
 \subsection{Integrity Verification of the Retrieved Object}
@@ -41,7 +44,7 @@ sha256sum retrieved.pdf
 \end{lstlisting}
 
 \begin{questionbox}
-You have just computed a hash of an object retrieved through the cloud provider's own API ---
+You have just computed a hash of an object retrieved through the cloud provider's own API,
 you did not access any underlying disk. What exactly does this hash prove, and what does it
 \emph{not} prove, compared to a hash computed on a bit-for-bit disk image as in Laboratory 2?
 \end{questionbox}
@@ -55,10 +58,10 @@ you did not access any underlying disk. What exactly does this hash prove, and w
 \begin{lstlisting}
 awslocal s3api head-object --bucket novadynamics-billing-archive --key contract_2026_0091.pdf
 \end{lstlisting}
-This is the same category of operation --- an object metadata lookup --- that produced the
-\texttt{s3\_object\_versions.json} export you will analyse in Section 6. 
-\\
-Take a moment to compare the fields you see here with the fields inside that export file; they should look structurally similar, because they come from the same kind of underlying API call.
+This is the same category of operation, an object metadata lookup, that produced the
+\texttt{s3\_object\_versions.json} export you will analyse in Section 6. Take a moment to compare
+the fields you see here with the fields inside that export file; they should look structurally
+similar, because they come from the same kind of underlying API call.
 
 \begin{questionbox}
 Compare the metadata fields available here to the metadata ExifTool extracted in Laboratory 2
@@ -67,4 +70,127 @@ Compare the metadata fields available here to the metadata ExifTool extracted in
 
 \begin{answerbox}
 \vspace{2.5cm}
+\end{answerbox}
+
+\subsection{Where Event Logs Come From}
+
+Everything you have done so far in this section left no trace that you could go back and read.
+The bucket holds the object, and the object carries its metadata, but nothing so far records
+\emph{that you asked for it}. That record, the event log, is a separate mechanism, and it exists
+only if someone turned it on beforehand.
+\medskip
+
+\noindent
+This is the single most important structural fact about the evidence you will analyse in Section
+5, so it is worth arriving at it by experiment rather than by assertion. In the next subsection
+you will configure event notifications on your sandbox bucket, then repeat operations you have
+already performed, and observe the events appear. The point is not the configuration itself but
+what it implies: an event log is a \emph{decision} taken by whoever administers the environment,
+before the fact, and it can be scoped narrowly, disabled, or never enabled at all.
+
+\subsection{Configuring Event Notifications}
+
+MinIO exposes event notifications through its own administrative client, \texttt{mc}, rather than
+through the plain S3 API. Install it first:
+
+\begin{lstlisting}
+curl -O https://dl.min.io/client/mc/release/linux-amd64/mc
+\end{lstlisting}
+\begin{lstlisting}
+chmod +x mc
+\end{lstlisting}
+\begin{lstlisting}
+sudo mv mc /usr/local/bin/
+\end{lstlisting}
+\begin{lstlisting}
+mc --version
+\end{lstlisting}
+
+\noindent
+Register your local MinIO instance with \texttt{mc}:
+\begin{lstlisting}
+mc alias set local http://localhost:9000 minioadmin minioadmin
+\end{lstlisting}
+
+\noindent
+Events have to be delivered somewhere. We will send them to a small HTTP listener running on the
+VM, so that you can read them as they arrive. Create it in a separate terminal:
+
+\begin{lstlisting}
+cat > webhook_listener.py << 'EOF'
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+class Handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        length = int(self.headers.get('Content-Length', 0))
+        print(self.rfile.read(length).decode(), flush=True)
+        self.send_response(200)
+        self.end_headers()
+
+HTTPServer(('0.0.0.0', 8888), Handler).serve_forever()
+EOF
+\end{lstlisting}
+\begin{lstlisting}
+python3 webhook_listener.py
+\end{lstlisting}
+
+\noindent
+Leave that terminal running and return to your first one. Point MinIO at the listener and restart
+it so the new target is picked up:
+
+\begin{lstlisting}
+mc admin config set local notify_webhook:1 endpoint="http://host.docker.internal:8888"
+\end{lstlisting}
+\begin{lstlisting}
+mc admin service restart local
+\end{lstlisting}
+
+\begin{warningbox}
+The hostname \texttt{host.docker.internal} is what lets the container reach the listener running
+on the VM. It resolves only because of the \texttt{-\/-add-host} flag given to \texttt{docker run}
+in Section 3.4. If you started the container without that flag, remove it
+(\texttt{docker rm -f minio}) and start it again with the full command from Section 3.4.
+\end{warningbox}
+
+\noindent
+Now subscribe the bucket to object-creation and object-access events:
+
+\begin{lstlisting}
+mc event add local/novadynamics-billing-archive arn:minio:sqs::1:webhook --event put,get,delete
+\end{lstlisting}
+\begin{lstlisting}
+mc event ls local/novadynamics-billing-archive
+\end{lstlisting}
+
+\noindent
+With notifications now active, repeat two operations you already performed in Sections 4.1 and
+4.2, and watch the listener terminal as each one runs:
+
+\begin{lstlisting}
+awslocal s3 cp contract_2026_0091.pdf s3://novadynamics-billing-archive/
+\end{lstlisting}
+\begin{lstlisting}
+awslocal s3 cp s3://novadynamics-billing-archive/contract_2026_0091.pdf ./retrieved2.pdf
+\end{lstlisting}
+
+\noindent
+Each operation should produce a JSON event in the listener terminal, carrying the event type, a
+timestamp, the requesting identity, the source IP address, and the object key. Compare its shape
+with the records inside \texttt{cloudtrail\_events.json}: the field names differ, because that
+export follows AWS CloudTrail's schema rather than MinIO's, but the information carried is the
+same, and it is the same class of mechanism that produced it.
+
+\begin{questionbox}
+You performed the operations in Sections 4.1--4.3 \emph{before} configuring notifications, and
+repeated two of them afterwards. Only the later ones produced events.\\
+(a) What, concretely, would remain of the earlier operations if you had to investigate this
+bucket now, having arrived after the fact?\\
+(b) The subscription you created covers \texttt{put}, \texttt{get} and \texttt{delete}. Suppose an
+administrator had subscribed only to \texttt{put} and \texttt{delete}. Which of the two operations
+you just repeated would have gone unrecorded, and how would that omission look to an investigator
+reading the resulting export, distinguishable from an operation that never happened?
+\end{questionbox}
+
+\begin{answerbox}
+\vspace{4cm}
 \end{answerbox}

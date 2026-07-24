@@ -78,6 +78,7 @@ That is exactly why this laboratory has two distinct kinds of activity:
 		\textbf{Artefact} & \textbf{Format} & \textbf{Description} \\
 		\midrule
 		\texttt{cloudtrail\_events.json}    & JSON                & Management/data-plane event log export, provided by the CSP \\
+		\texttt{cloudtrail\_digest.json}    & JSON                & Digest file accompanying the log export, used by the CSP to attest log integrity \\
 		\texttt{s3\_object\_versions.json}  & JSON                & Metadata export: versions, timestamps, region tags for the affected object \\
 		\texttt{data\_transfer\_metrics.json} & JSON              & Independent billing/data-transfer-out report, hourly granularity \\
 		Live sandbox access                 & MinIO (Docker)      & A local S3-compatible emulation of the bucket, for direct hands-on interaction \\
@@ -85,6 +86,10 @@ That is exactly why this laboratory has two distinct kinds of activity:
 	\end{tabularx}
 	\caption{Evidence and access manifest for Operation SILENT BUCKET.}
 \end{table}
+
+\noindent
+The second artefact, \texttt{cloudtrail\_digest.json}, deserves a note here because it is the mechanism a real cloud provider uses to attest that a log export has not been altered after it was produced. Real AWS CloudTrail digest files chain each digest to the hash of the previous one and are signed with the provider's private key, so that a recipient can verify both the content and the origin of the logs. The file supplied for this laboratory is a simplified version of that format; you will examine what it does and does not let you prove in Section 8.
+\medskip
 
 \begin{warningbox}
 All JSON artefacts must be treated as evidence exports. Verify the integrity of each file

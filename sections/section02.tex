@@ -1,58 +1,90 @@
-\section{Tool Procurement --- A Role-Based Exercise}
+\section{Tool Procurement}
 
-Before the analysis begins, each role must contribute to a documented tool selection decision.
-Three capability areas have been identified as immediate requirements for this case.
+Before the analysis begins, each role must contribute to a documented tool selection decision. Three capability areas have been identified as immediate requirements for this case.
 
 \subsection{Required Capability Areas}
 
 \textbf{Area 1: Cloud API Interaction}\\
 Tools must allow listing, retrieving, and hashing objects from a cloud object store via command
 line, without requiring direct infrastructure access.
-\medskip
 
-\noindent
 \textbf{Area 2: Structured Log Analysis}\\
 Tools must parse and query JSON-formatted event logs, filtering by event type, timestamp, and
 actor.
-\medskip
 
-\noindent
 \textbf{Area 3: Local Cloud Emulation}\\
 A capability to reproduce a minimal cloud object-storage API locally, for training purposes,
 without incurring cost or requiring a real provider account.
 
-\subsection{Background: Object Storage, S3, and Why It Matters Here}
+\subsection{Background: Object Storage and S3}
 
 Before listing the tools, it is worth clarifying two things that later sections assume you
 already understand.
 \medskip
 
-
 \noindent
-\textbf{What ``S3'' actually is.} S3 (Simple Storage Service) is the name of Amazon's object storage product, but over time its HTTP API has become a de-facto \emph{industry protocol}: 
-``S3-compatible'' storage is now offered by most cloud providers and by open-source software, regardless of who actually built it.
+\textbf{What ``S3'' actually is.} S3 (Simple Storage Service) is the name of Amazon's object
+storage product, but over time its HTTP API has become a de-facto \emph{industry protocol}:
+``S3-compatible'' storage is now offered by most cloud providers and by open-source software,
+regardless of who actually built it. Unlike a filesystem, an object store has no directories in
+the traditional sense: every object is stored flat inside a \emph{bucket}, addressed by a
+\emph{key} (its name/path string) and accompanied by \emph{metadata} (size, content type,
+last-modified time, and optionally custom key-value tags). Whenever this laboratory says
+``interact with the bucket'', it means issuing HTTP requests against this API, normally
+through the \texttt{aws cli}, which simply builds and sends those requests for you.
 \medskip
 
 \noindent
-Unlike a filesystem, an object store has no directories in the traditional sense: every object is stored flat inside a \emph{bucket}, addressed by a \emph{key} (its name/path string) and accompanied by \emph{metadata} (size, content type, last-modified time, and optionally custom key-value tags).\\
- Whenever this laboratory says
-``interact with the bucket'', it means issuing HTTP requests against this API normally through the \texttt{aws cli}.
-\bigskip
-
-\noindent
 \textbf{Why we interact with S3 directly at all.} NovaDynamics' actual cloud provider is, of
-course, not accessible to us --- we only have the exports listed in Section 1.4. Section 4 of
+course, not accessible to us: we only have the exports listed in Section 1.4. Section 4 of
 this laboratory has you interact with a \emph{local stand-in} bucket instead. This is not
 redundant busywork: it is the only way, short of a real provider account, to see first-hand what
 the S3 API actually returns for an operation like ``list objects'' or ``get object metadata''.
 That first-hand experience is what lets you later judge, in Sections 5--6, whether a given export
 is complete, plausible, or has gaps.
 
-\subsection{Background: What Docker Is, and Why We Use It Here}
+\subsection{Background: Docker}
 
-Docker lets you run a piece of software (here, MinIO)inside an isolated \emph{container}, without installing it directly onto your VM's operating system and without it interfering with anything else on the system. \\
-You do not need to understand Docker's internals for this laboratory; you only need three operations, all of which are shown step by step in Section 3: \emph{run} a container (start the software), \emph{list} running containers (check it is alive), and \emph{stop/remove} a container (clean up afterwards). \\
-We use Docker here purely as a convenient, disposable way to stand up a local S3-compatible server.
+Docker lets you run a piece of software (here, MinIO) inside an isolated
+\emph{container}, without installing it directly onto your VM's operating system and without it
+interfering with anything else on the system. You do not need to understand Docker's internals
+for this laboratory; you only need three operations, all of which are shown step by step in
+Section 3: \emph{run} a container (start the software), \emph{list} running containers (check
+it is alive), and \emph{stop/remove} a container (clean up afterwards). We use Docker here purely
+as a convenient, disposable way to stand up a local S3-compatible server, \emph{not} as a
+forensic subject in its own right (container forensics is a distinct topic, not covered by this
+laboratory).
+
+\subsection{Tool Versions and Reproducibility}
+
+Every command in Section 3 specifies an explicit version for the tools it installs or runs,
+rather than pulling whatever the current release happens to be. This is deliberate, and it is a
+forensic requirement rather than a stylistic preference: an analysis that cannot be reproduced is
+an analysis that cannot be defended. Different versions of the same tool can behave differently
+on identical input, and the versions recorded here are the ones under which this laboratory was
+verified end to end.
+\medskip
+
+\noindent
+This is not a hypothetical concern. Two concrete examples encountered while preparing this
+laboratory:
+
+\begin{itemize}[leftmargin=1.2cm]
+	\item An earlier draft used LocalStack as the local emulator. Since March 2026, its Docker
+	      image requires a free account and an auth token even to start, which defeats the
+	      ``no account, no cost'' constraint of Area 3 above. Pinning to an older release did not
+	      solve the problem either, because recent versions of \texttt{aws cli} (from v2.23,
+	      January 2025) send an additional checksum header on every upload that older emulator
+	      releases reject.
+	\item MinIO itself is therefore pinned to a specific release tag below. If a future release
+	      changes its licensing or its API behaviour, the pinned tag keeps this laboratory
+	      reproducible until it is formally revised.
+\end{itemize}
+
+\noindent
+Record in your notes the exact version of every tool you actually used, including \texttt{aws cli}
+(\texttt{aws -\/-version}) and \texttt{jq} (\texttt{jq -\/-version}), even where this text does not
+pin them: your report should let a third party re-run your analysis and obtain the same results.
 
 \subsection{Pre-approved Tools}
 
@@ -62,7 +94,11 @@ We use Docker here purely as a convenient, disposable way to stand up a local S3
 	\item[\texttt{jq}] Command-line JSON processor, for querying and filtering the CloudTrail-style
 	      log export.
 	\item[MinIO (Docker)] Local, open-source, cost-free emulation of an S3-compatible object
-	      store; run inside the same CAINE/Kali VM already used in previous laboratories. 
+	      store; run inside the same CAINE/Kali VM already used in previous laboratories.\\
+		  Pinned to release \texttt{RELEASE.2025-09-07T16-13-09Z}, the version under which this
+		  laboratory was verified.
+	\item[\texttt{mc} (MinIO Client)] Companion command-line client for MinIO, used in Section 4.5
+	      to configure event notifications, a capability not exposed through the plain S3 API.
 	\item[\texttt{sha256sum}] Already used in Laboratories 2 and 3, reused here for verifying
 	      object integrity after acquisition.
 \end{description}
