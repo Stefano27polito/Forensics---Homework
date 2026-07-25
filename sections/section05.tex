@@ -4,6 +4,16 @@
 This is where the actual investigation begins. Everything from this point onward uses only the
 exports listed in Section 1.4, not the sandbox from Sections 3--4, which has already served
 its purpose.
+\medskip
+
+\noindent
+Install \texttt{jq} first if not already present on your VM:
+\begin{lstlisting}
+sudo apt install jq
+\end{lstlisting}
+\begin{lstlisting}
+jq --version
+\end{lstlisting}
 
 \begin{warningbox}
 A quick note on tool soundness before you start querying: \texttt{jq}, used as below, only reads
@@ -74,22 +84,18 @@ perfectly valid, unaltered JSON?
 \end{answerbox}
 
 \noindent
-Since the log export itself has a blind spot exactly where we need it most, we turn to a second,
-independent artefact: a billing/data-transfer report. Billing systems and audit-logging systems
-are usually built and operated independently of one another inside a cloud provider, precisely
-because they serve different purposes, which is exactly what makes cross-referencing them
-useful here.
+Since the log export itself has a blind spot exactly where we need it most, we turn to a second, independent artefact: a billing/data-transfer report.\\
+Billing systems and audit-logging systems are usually built and operated independently of one another inside a cloud provider, precisely
+because they serve different purposes, which is exactly what makes cross-referencing them useful here.
 
 \begin{lstlisting}
 jq '.hourly_data_transfer_out_MB[]' data_transfer_metrics.json
 \end{lstlisting}
 
 \begin{questionbox}
-Using \texttt{data\_transfer\_metrics.json}, identify the anomalous hour and estimate, as
-precisely as the data allows, the order of magnitude of data transferred out of the bucket
-during the un-logged window. This source was \textbf{not} disabled by the same bucket-policy
-manipulation that suppressed \texttt{GetObject} logging. Why not? What does this tell you
-about designing a logging architecture that is resilient to a single point of compromise?
+Using \texttt{data\_transfer\_metrics.json}, identify the anomalous hour and estimate, as precisely as the data allows, the order of magnitude of data transferred out of the bucket during the un-logged window. \\
+This source was \textbf{not} disabled by the same bucket-policy manipulation that suppressed \texttt{GetObject} logging. Why not? What does this tell you about designing a logging architecture that is resilient to a single point of compromise? \\
+And, precisely, what can you \emph{not} conclude from this metric alone, for instance, can you tell how many distinct objects were read?
 \end{questionbox}
 
 \begin{answerbox}

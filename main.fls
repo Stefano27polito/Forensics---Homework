@@ -398,6 +398,7 @@ INPUT sections/section03.tex
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmtk10.tfm
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmtt10.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr10.tfm
 INPUT ./sections/section04.tex
 INPUT ./sections/section04.tex
 INPUT ./sections/section04.tex

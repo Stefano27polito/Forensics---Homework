@@ -1,45 +1,35 @@
 \section{Redundancy and Primary Copy Identification}
 
-Cloud storage is, by default, redundant: providers routinely replicate objects across multiple
-physical locations, and often across regions, for durability and disaster-recovery purposes, with
-no action required from the customer. From a forensic standpoint this redundancy is a
-double-edged sword: it means the data is unlikely to be permanently lost, but it also means that
-``the same file'' may legitimately exist in more than one place at once, at slightly different
-points in a replication cycle, and only one of those copies was actually the one interacted
-with at the time of the incident.
+Cloud storage is, by default, redundant: providers routinely replicate objects across multiple physical locations, and often across regions, for durability and disaster-recovery purposes, with no action required from the customer.\\
+From a forensic standpoint this redundancy is a double-edged sword: it means the data is unlikely to be permanently lost, but it also means that ``the same file'' may legitimately exist in more than one place at once, at slightly different points in a replication cycle, and only one of those copies was actually the one interacted with at the time of the incident.
 
 \subsection{Background: Cross-Region Replication}
 
 Cross-Region Replication (CRR) copies objects from a bucket in one region, the \emph{source}, to a
 bucket in another, the \emph{destination}. Once enabled, it applies automatically to every
 subsequent write. Three of its properties matter for what follows.
+\medskip
 
-\textbf{It is asynchronous.} A \texttt{PutObject} on the source returns as soon as the source
-region has the object; the copy to the destination happens afterwards, typically within seconds
-but with no guaranteed bound. The two regions are therefore never continuously in step.
+\noindent
+\textbf{It is asynchronous.} A \texttt{PutObject} on the source returns as soon as the sourceregion has the object; the copy to the destination happens afterwards, typically within seconds but with no guaranteed bound. The two regions are therefore never continuously in step.
+\medskip
 
-\textbf{The replica's timestamp is the time of replication, not the time of writing.} The
-destination object records when \emph{it} was written, which is when replication delivered it.
-A replica can consequently carry a \texttt{lastModified} value later than that of the source
-object it was copied from, without anything having been modified. The lag is the cause, not a
-second write.
+\noindent
+\textbf{The replica's timestamp is the time of replication, not the time of writing.} The destination object records when \emph{it} was written, which is when replication delivered it.\\
+A replica can consequently carry a \texttt{lastModified} value later than that of the source object it was copied from, without anything having been modified. The lag is the cause, not a second write.
+\medskip
 
-\textbf{The content is unchanged, and says so.} Replication copies bytes verbatim, so source and
-replica share an identical \texttt{ETag}. Providers additionally mark the relationship explicitly:
-the destination object carries a replication status of \texttt{REPLICA}, and typically a reference
-back to the source version it derives from.
+\noindent
+\textbf{The content is unchanged, and says so.} Replication copies bytes verbatim, so source and replica share an identical \texttt{ETag}.\\
+Providers additionally mark the relationship explicitly:\\
+the destination object carries a replication status of \texttt{REPLICA}, and typically a reference back to the source version it derives from.
 
 \medskip
 
 \noindent
-The forensic consequence is a rule worth stating plainly, because it generalises well beyond this
-laboratory: \emph{in a replicated environment, recency of timestamp does not establish which copy
-was acted upon}. Two objects with the same ETag and different timestamps are one object seen at
-two points in a replication cycle. To identify the copy that was actually accessed, you look at
-what the provider states about the relationship, the replication status and the source-version
-reference, rather than at which timestamp happens to be larger. The same reasoning applies to any
-system that propagates data asynchronously, backup targets and read replicas included; CRR is
-simply the case you meet here.
+The forensic consequence is a rule worth stating plainly, because it generalises well beyond this laboratory: \emph{in a replicated environment, recency of timestamp does not establish which copy
+was acted upon}.\\
+Two objects with the same ETag and different timestamps are one object seen at two points in a replication cycle. To identify the copy that was actually accessed, you look at what the provider states about the relationship, the replication status and the source-version reference, rather than at which timestamp happens to be larger. The same reasoning applies to any system that propagates data asynchronously, backup targets and read replicas included; CRR is simply the case you meet here.
 
 \subsection{Inspecting the Version Export}
 
@@ -76,10 +66,8 @@ you tell that case apart from ordinary replication lag.
 \subsection{Chain of Custody Documentation}
 
 \begin{questionbox}
-Draft the chain-of-custody entry (in the same format used in Laboratory 2, Section 6.2) for
-the primary copy identified above. What field(s), specific to a cloud/versioned-object context,
-do you need to record here that had no equivalent in the Laboratory 2 disk-image chain of
-custody?
+What would a complete chain-of-custody record need to contain for the primary copy identified above? \\
+Which of those fields are specific to a cloud/versioned-object context, with no equivalent when the evidence is a physical disk?
 \end{questionbox}
 
 \begin{answerbox}

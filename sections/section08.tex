@@ -1,12 +1,9 @@
 \section{Legal \& Trust Module}
 
 \begin{questionbox}[title=Question (a)]
-A replica of the exfiltrated object resides physically in \texttt{us-east-1} (United States), while NovaDynamics and its customers are based in the EU. 
-\\
-To which broader problem of operating in the cloud does this situation correspond? 
-\\
-In answering, situate the case within the real normative frameworks that govern it: the U.S. CLOUD Act, which allows U.S. authorities to compel a U.S.-based provider to produce data it controls irrespective of where that data physically sits; Article 48 GDPR, which denies recognition to a third-country order requiring transfer of personal data unless it rests on an international agreement in force; and \emph{Schrems II} (CJEU, C-311/18), which invalidated the Privacy Shield and requires a case-by-case assessment of whether third-country law affords essentially equivalent protection.
-\\
+A replica of the exfiltrated object resides physically in \texttt{us-east-1} (United States), while NovaDynamics and its customers are based in the EU. \\
+To which broader problem of operating in the cloud does this situation correspond? \\
+Situate your answer within the real regulatory landscape, at minimum the U.S. CLOUD Act, Article 48 GDPR, and the \emph{Schrems II} ruling are all directly relevant here; look up what each actually says and use them to ground your argument. \\
 Explain why cross-region replication makes this a structural condition of cloud forensics rather than an accident of this one incident.
 \end{questionbox}
 
@@ -29,10 +26,9 @@ The artefact set includes \texttt{cloudtrail\_digest.json}, which is the provide
 	      generated the material being attested, and at what point in its lifetime the attestation
 	      was applied.
 	\item Based on principles already covered in this course (hashing, chain of custody,
-	      repeatability), what would have to be true about how an export was produced for you to
-	      defend it as being as trustworthy as a bit-for-bit disk image acquired directly, as in
-	      Laboratory 2? Given what you do \emph{not} control in a cloud environment, is that
-	      standard achievable here?
+	      repeatability): given what you do \emph{not} control in a cloud environment, can
+	      provider-mediated evidence like this one ever meet the same evidentiary standard as
+	      evidence you acquired directly yourself? Justify your answer.
 \end{enumerate}
 \end{questionbox}
 

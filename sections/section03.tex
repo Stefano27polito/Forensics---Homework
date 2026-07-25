@@ -1,6 +1,6 @@
 \section{Setting Up the Forensic Environment}
 
-This laboratory can reuse the CAINE14/Kali VM already configured in Laboratory 2. \\
+This laboratory can reuse the CAINE14/Kali VM already configured for a previous forensic exercise. \\
 For completeness, and so that this laboratory can be carried out on its own, even if you no longer have that VM available, the full environment setup is summarised again below.
 
 \subsection{Quick VM Setup via Pre-built \texttt{.ova} Image}
@@ -43,7 +43,7 @@ host CPU or hypervisor may not support nested virtualisation. In that case, Dock
 is not guaranteed to work reliably, and you should flag this to your team.
 \end{warningbox}
 
-\subsection{Base Forensic VM (recap from Laboratory 2)}
+\subsection{Base Forensic VM (recap)}
 
 If you are instead reusing an existing installation rather than the quick \texttt{.ova} route above, the following recap still applies:
 
@@ -221,8 +221,11 @@ given.
 \end{warningbox}
 
 \begin{questionbox}
-Why must every command in this section explicitly specify \texttt{--endpoint-url}? \\
-What would happen if a student forgot this flag, and why is this exact mistake also a realistic risk during a genuine cloud investigation involving multiple provider accounts or regions?
+\texttt{aws cli} does not distinguish between a real AWS account and a local emulator: it is the configuration, endpoint, credentials, region, that decides what it actually talks to, not the tool itself. \\
+
+The credentials you just configured (\texttt{minioadmin}/\texttt{minioadmin}) grant full administrative access to this sandbox bucket. In a real investigation, you would not receive credentials like these: you would be issued access scoped specifically to the case, by the cloud provider, under the terms of the engagement. \\
+
+What does the client's inability to distinguish these two situations tell you about how much trust you can place in a command's output, if you do not independently know how the person who ran it configured their access? And why does the gap between ``administrative access'' and ``access scoped for this investigation'' matter for chain of custody, specifically?
 \end{questionbox}
 
 \begin{answerbox}
