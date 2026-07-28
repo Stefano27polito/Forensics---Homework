@@ -91,11 +91,27 @@ through the plain S3 API. Install it first:
 curl -L -O https://dl.min.io/client/mc/release/linux-amd64/mc
 \end{lstlisting}
 The \texttt{-L} flag is required: this URL currently redirects, and without it \texttt{curl}
-saves the small redirect response instead of the actual binary. Check the file size before
-proceeding, it should be tens of megabytes, not a few hundred bytes:
+saves the small redirect response instead of the actual binary. \\
+Verify it the same way you verified the Kali image in Section 3.1, by checksum, not by eyeballing
+the file size: MinIO publishes a matching checksum file alongside the binary.
 \begin{lstlisting}
-ls -la mc
+curl -L -O https://dl.min.io/client/mc/release/linux-amd64/mc.sha256sum
 \end{lstlisting}
+\begin{lstlisting}
+sha256sum mc
+\end{lstlisting}
+\begin{lstlisting}
+cat mc.sha256sum
+\end{lstlisting}
+
+\begin{warningbox}
+Do \emph{not} run \texttt{sha256sum -c mc.sha256sum} here: a known issue in how this specific
+file is published (the recorded filename inside it does not match the plain \texttt{mc} filename
+you saved it as) makes that convenience check report a mismatch even when the binary is genuine.
+Compare the two hash values by eye instead, the first field printed by \texttt{sha256sum mc}
+against the hash inside \texttt{mc.sha256sum}. If they differ, do not proceed.
+\end{warningbox}
+
 \begin{lstlisting}
 chmod +x mc
 \end{lstlisting}
@@ -140,6 +156,13 @@ This command will not print anything and will not return you to the prompt, that
 arrive. Do not interrupt it: leave this terminal exactly as it is, and move to the next step in a
 separate terminal. Output will appear here only once the events start being generated in Section
 4.5.
+\medskip
+
+\noindent
+Note also, in the same spirit as the credentials warning in Section 3.4: this listener binds to
+\texttt{0.0.0.0:8888} with no authentication and no input validation, and prints whatever it
+receives verbatim. Acceptable only because it is throwaway and reachable solely from inside this
+isolated local sandbox; never expose an unauthenticated listener like this on a real network.
 \end{warningbox}
 
 \noindent
